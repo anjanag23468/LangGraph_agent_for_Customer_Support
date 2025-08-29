@@ -1,0 +1,84 @@
+input_schema:
+  type: object
+  properties:
+    customer_name: string
+    email: string
+    query: string
+    priority: string
+    ticket_id: string
+
+stages:
+  - name: INTAKE
+    mode: deterministic
+    abilities:
+      - accept_payload
+    prompt: Accept incoming payload.
+
+  - name: UNDERSTAND
+    mode: deterministic
+    abilities:
+      - parse_request_text
+      - extract_entities
+    prompt: Parse and extract entities.
+
+  - name: PREPARE
+    mode: deterministic
+    abilities:
+      - normalize_fields
+      - enrich_records
+      - add_flags_calculations
+    prompt: Normalize fields and enrich data.
+
+  - name: ASK
+    mode: deterministic
+    abilities:
+      - clarify_question
+    prompt: Ask clarification questions.
+
+  - name: WAIT
+    mode: deterministic
+    abilities:
+      - extract_answer
+      - store_answer
+    prompt: Extract and store answer.
+
+  - name: RETRIEVE
+    mode: deterministic
+    abilities:
+      - knowledge_base_search
+      - store_data
+    prompt: Retrieve knowledge base info.
+
+  - name: DECIDE
+    mode: non-deterministic
+    abilities:
+      - solution_evaluation
+      - escalation_decision
+      - update_payload
+    prompt: Evaluate solutions and escalate if needed.
+
+  - name: UPDATE
+    mode: deterministic
+    abilities:
+      - update_ticket
+      - close_ticket
+    prompt: Update and close ticket.
+
+  - name: CREATE
+    mode: deterministic
+    abilities:
+      - response_generation
+    prompt: Generate customer response.
+
+  - name: DO
+    mode: deterministic
+    abilities:
+      - execute_api_calls
+      - trigger_notifications
+    prompt: Execute API calls and send notifications.
+
+  - name: COMPLETE
+    mode: deterministic
+    abilities:
+      - output_payload
+    prompt: Output final structured payload.
